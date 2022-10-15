@@ -1,17 +1,18 @@
 import * as React from "react";
-import Layout from "../../components/layout";
-import Seo from "../../components/seo";
+
 import { graphql, Link } from "gatsby";
+import Layout from "../components/layout";
+import Seo from "../components/seo";
 
 const programsPage = ({ data }) => {
   return (
     <Layout pageTitle="SSB Program">
       <p>all cool programs here</p>
       <ul>
-        {data.allMdx.nodes.map((node) => (
+        {data.allMarkdownRemark.nodes.map((node) => (
           <li key={node.id}>
 
-            <Link to={`/program/${node.frontmatter.slug}`}>
+            <Link to={`/program${node.fields.slug}`}>
               {node.frontmatter.name}
 
             </Link>
@@ -25,20 +26,21 @@ const programsPage = ({ data }) => {
 
 export const query = graphql`
   query {
-    allMdx(filter: {frontmatter: {folder: {eq: "program"}}}) {
-      nodes {
-        frontmatter {
-          date(formatString: "MMMM D, YYYY")
-          name
+    allMarkdownRemark(filter: {frontmatter: {folder: {eq: "program"}}}) {
+    nodes {
+      frontmatter {
+        name
+        date
+        folder
+      }
+      fields {
           slug
         }
-        id
-       
-      }
+      id
     }
   }
+  }
 `
-
 
 export const Head = () => <Seo title="SSB Artists" />;
 
