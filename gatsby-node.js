@@ -1,5 +1,6 @@
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
+const _ = require("lodash")
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
     const { createPage } = actions
@@ -7,6 +8,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     // Define a template for blog artist
     const artistPage = path.resolve(`./src/templates/artist-page.js`)
     const programPage = path.resolve(`./src/templates/program-page.js`)
+
+    // Define a template for kuenstlergruppe tags
+    const kuenstlergruppeTemplate = path.resolve("src/templates/kuenstlergruppe.js")
 
     // Get all markdown blog artists sorted by date
     const result = await graphql(
@@ -21,9 +25,15 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                 frontmatter {
                   name
                   folder
+                  kuenstlergruppe
                 }
               }
             }
+            tagsGroup: allMarkdownRemark(limit: 2000) {
+                group(field: frontmatter___kuenstlergruppe) {
+                  fieldValue
+                }
+              }
           }
           
     `
@@ -69,6 +79,22 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
         })
     }
+
+    // Extract kuenstlergruppe data from query
+    const kuenstler = result.data.tagsGroup.group
+
+    // Make kuenstlergruppe pages
+    kuenstler.forEach(kuenstler => {
+        createPage({
+            path: `/kuenstlergruppe/${_.kebabCase(kuenstler.fieldValue)}/`,
+            component: kuenstlergruppeTemplate,
+            context: {
+                tag: kuenstler.fieldValue,
+            },
+        })
+    })
+
+
 }
 
 exports.onCreateNode = ({ node, actions, getNode }) => {

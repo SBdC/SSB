@@ -28,6 +28,10 @@ const artistsPage = ({ data }) => {
 export const query = graphql`
   query {
     allMarkdownRemark(filter: {frontmatter: {folder: {eq: "artists"}}}) {
+    group(field: frontmatter___kuenstlergruppe) {
+      kuenstlergruppe: fieldValue
+      totalCount
+    }  
     nodes {
       frontmatter {
         name
