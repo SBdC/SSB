@@ -1,16 +1,20 @@
 import * as React from "react";
-import Layout from "../components/layout";
-import Seo from "../components/seo";
-import { graphql } from "gatsby";
+import Layout from "../../components/layout";
+import Seo from "../../components/seo";
+import { graphql, Link } from "gatsby";
 
-const artistsPage = ({ data }) => {
+const programsPage = ({ data }) => {
   return (
     <Layout pageTitle="SSB Program">
-      <p>all cool artists here</p>
+      <p>all cool programs here</p>
       <ul>
         {data.allMdx.nodes.map((node) => (
           <li key={node.id}>
-            {node.frontmatter.name}
+
+            <Link to={`/program/${node.frontmatter.slug}`}>
+              {node.frontmatter.name}
+
+            </Link>
 
           </li>
         ))}
@@ -21,11 +25,12 @@ const artistsPage = ({ data }) => {
 
 export const query = graphql`
   query {
-    allMdx(filter: {frontmatter: {folder: {eq: "artists"}}}) {
+    allMdx(filter: {frontmatter: {folder: {eq: "program"}}}) {
       nodes {
         frontmatter {
           date(formatString: "MMMM D, YYYY")
           name
+          slug
         }
         id
        
@@ -37,4 +42,4 @@ export const query = graphql`
 
 export const Head = () => <Seo title="SSB Artists" />;
 
-export default artistsPage;
+export default programsPage;
