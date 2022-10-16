@@ -13,7 +13,7 @@ const IndexPage = () => {
       <h1>Welcome</h1>
 
       <StaticImage
-        alt="Clifford, a reddish-brown pitbull, posing on a couch and looking stoically at the camera"
+        alt="pattern sbdc"
         src="../images/SBdC-pattern(4).png"
       />
     </Layout>

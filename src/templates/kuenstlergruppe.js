@@ -4,23 +4,25 @@ import PropTypes from "prop-types"
 
 // Components
 import { Link, graphql } from "gatsby"
+import Layout from "../components/layout"
 
 const Tags = ({ pageContext, data }) => {
   const { tag } = pageContext
   const { edges, totalCount } = data.allMarkdownRemark
+  console.log(edges)
   const tagHeader = `${totalCount} post${totalCount === 1 ? "" : "s"
     } tagged with "${tag}"`
 
   return (
-    <div>
+    <Layout>
       <h1>{tagHeader}</h1>
       <ul>
         {edges.map(({ node }) => {
           const { slug } = node.fields
-          const { title } = node.frontmatter
+          const { name } = node.frontmatter
           return (
             <li key={slug}>
-              <Link to={slug}>{title}</Link>
+              <Link to={slug}>{name}</Link>
             </li>
           )
         })}
@@ -30,13 +32,13 @@ const Tags = ({ pageContext, data }) => {
               You'll come back to it!
             */}
       <Link to="/kuenstlergruppe">All kuenstlergruppe</Link>
-    </div>
+    </Layout>
   )
 }
 
 Tags.propTypes = {
   pageContext: PropTypes.shape({
-    tag: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
   }),
   data: PropTypes.shape({
     allMarkdownRemark: PropTypes.shape({
@@ -45,7 +47,7 @@ Tags.propTypes = {
         PropTypes.shape({
           node: PropTypes.shape({
             frontmatter: PropTypes.shape({
-              title: PropTypes.string.isRequired,
+              name: PropTypes.string.isRequired,
             }),
             fields: PropTypes.shape({
               slug: PropTypes.string.isRequired,
@@ -60,20 +62,22 @@ Tags.propTypes = {
 export default Tags
 
 export const pageQuery = graphql`
-  query($kuenstlergruppe: String) {
+  query($tag: [String]) {
     allMarkdownRemark(
       limit: 2000
       sort: { fields: [frontmatter___date], order: DESC }
-      filter: { frontmatter: { kuenstlergruppe: { in: [$kuenstlergruppe] } } }
+      filter: {frontmatter: {folder: {eq: "artists"}, kuenstlergruppe: {in: $tag}}}
     ) {
       totalCount
       edges {
         node {
+          id
           fields {
             slug
           }
           frontmatter {
             name
+            kuenstlergruppe
           }
         }
       }

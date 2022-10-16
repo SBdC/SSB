@@ -6,6 +6,7 @@ import kebabCase from "lodash/kebabCase"
 
 // Components
 import { Link, graphql } from "gatsby"
+import Layout from "../components/layout"
 
 const TagsPage = ({
   data: {
@@ -15,10 +16,10 @@ const TagsPage = ({
     },
   },
 }) => (
-  <div>
+  <Layout>
 
     <div>
-      <h1>Tags</h1>
+      <h1>Kuenstlergruppe</h1>
       <ul>
         {group.map(tag => (
           <li key={tag.fieldValue}>
@@ -29,7 +30,7 @@ const TagsPage = ({
         ))}
       </ul>
     </div>
-  </div>
+  </Layout>
 )
 
 TagsPage.propTypes = {
@@ -59,7 +60,7 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMarkdownRemark(limit: 2000) {
+    allMarkdownRemark(limit: 2000, filter: {frontmatter: {folder: {eq: "artists"}}}) {
       group(field: frontmatter___kuenstlergruppe) {
         fieldValue
         totalCount
