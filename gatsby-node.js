@@ -10,7 +10,10 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     const programPage = path.resolve(`./src/templates/program-page.js`)
 
     // Define a template for kuenstlergruppe tags
-    const kuenstlergruppeTemplate = path.resolve("src/templates/kuenstlergruppe.js")
+    const kuenstlergruppeTemplate = path.resolve("src/templates/kuenstlergruppe-page.js")
+
+    // Define a template for kapitel tags
+    const kapitelTemplate = path.resolve("src/templates/kapitel-page.js")
 
     // Get all markdown blog artists sorted by date
     const result = await graphql(
@@ -26,11 +29,17 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
                   name
                   folder
                   kuenstlergruppe
+                  kapitel
                 }
               }
             }
             tagsGroup: allMarkdownRemark(limit: 2000) {
                 group(field: frontmatter___kuenstlergruppe) {
+                  fieldValue
+                }
+              }
+            kapitelGroup: allMarkdownRemark(limit: 2000) {
+                group(field: frontmatter___kapitel) {
                   fieldValue
                 }
               }
@@ -90,6 +99,20 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             component: kuenstlergruppeTemplate,
             context: {
                 tag: kuenstler.fieldValue,
+            },
+        })
+    })
+
+    // Extract kapitel data from query
+    const kapitel = result.data.kapitelGroup.group
+
+    // Make kuenstlergruppe pages
+    kapitel.forEach(kap => {
+        createPage({
+            path: `/kapitel/${_.kebabCase(kap.fieldValue)}/`,
+            component: kapitelTemplate,
+            context: {
+                tag: kap.fieldValue,
             },
         })
     })

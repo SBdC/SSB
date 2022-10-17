@@ -1,7 +1,7 @@
 ---
 name: "Pioth Anderszewski"
 date: "2019-05-20T22:40:32.169Z"
-kapitel: "kammermusik"
+kapitel: ["kuenstlergruppe"]
 folder: "artists"
 kuenstlergruppe: ["klavier"]
 ---

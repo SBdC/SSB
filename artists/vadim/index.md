@@ -1,7 +1,7 @@
 ---
 name: "Vadim Gluzman"
 date: "2018-05-20T22:40:32.169Z"
-kapitel: "Streichquartett"
+kapitel: ["kuenstlergruppe"]
 folder: "artists"
 kuenstlergruppe: ["violine"]
 ---
