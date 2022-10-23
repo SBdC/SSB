@@ -57,7 +57,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     }
 
     const artists = result.data.allMarkdownRemark.nodes
-    console.log(artists)
+
 
     // Create blog artists pages
     // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)

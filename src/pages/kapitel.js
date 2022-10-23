@@ -1,11 +1,12 @@
 import React from "react"
 import PropTypes from "prop-types"
+import AniLink from "gatsby-plugin-transition-link/AniLink"
 
 // Utilities
 import kebabCase from "lodash/kebabCase"
 
 // Components
-import { Link, graphql } from "gatsby"
+import { graphql } from "gatsby"
 import Layout from "../components/layout"
 
 const TagsKapitelPage = ({
@@ -23,9 +24,9 @@ const TagsKapitelPage = ({
             <ul>
                 {group.map(tag => (
                     <li key={tag.fieldValue}>
-                        <Link to={`/kapitel/${kebabCase(tag.fieldValue)}/`}>
+                        <AniLink  paintDrip to={`/kapitel/${kebabCase(tag.fieldValue)}/`}>
                             {tag.fieldValue} ({tag.totalCount})
-                        </Link>
+                        </AniLink>
                     </li>
                 ))}
             </ul>

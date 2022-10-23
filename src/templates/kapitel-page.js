@@ -8,8 +8,9 @@ import Layout from "../components/layout"
 
 const KapitelTags = ({ pageContext, data }) => {
   const { tag } = pageContext
+  console.log(pageContext)
   const { edges, totalCount } = data.allMarkdownRemark
-  console.log(edges)
+
   const tagHeader = `${totalCount} post${totalCount === 1 ? "" : "s"
     } tagged with "${tag}"`
 
@@ -40,7 +41,7 @@ const KapitelTags = ({ pageContext, data }) => {
 
 KapitelTags.propTypes = {
   pageContext: PropTypes.shape({
-    tags: PropTypes.string.isRequired,
+    tag: PropTypes.string.isRequired,
   }),
   data: PropTypes.shape({
     allMarkdownRemark: PropTypes.shape({
