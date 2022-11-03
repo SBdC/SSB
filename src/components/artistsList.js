@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Seo from "./seo";
 import { graphql, Link, useStaticQuery } from "gatsby";
 import TransitionLink from 'gatsby-plugin-transition-link';
+import gsap from 'gsap';
 
-const ArtistsList = () => {
+const ArtistsList = (transitionStatus ) => {
 
   const data = useStaticQuery(graphql`
     query artistQuery {
@@ -33,22 +34,68 @@ const ArtistsList = () => {
 
 const artists = data.allMarkdownRemark.nodes
 
+const [isActive, setIsActive] = useState(true); 
+
+
+// useEffect(() => {
+//   gsap.from('.home-artist', {
+//     autoAlpha: 1,
+//     duration: 1,
+//   });
+// }, []); //THIS IS RUN THE FIRST TIME THE SITE IS OPENED 
+
+// useEffect(() => {
+//   if (transitionStatus === 'entering') {
+//     gsap.from('.home-artist', {
+//      y:800,
+     
+//     });
+//   }
+//   if (transitionStatus === 'exiting') {
+//     gsap.to('.home-artist', {
+//       y:0, 
+//       color:"red"
+//      });
+//   }
+// },[transitionStatus]); 
 
   return (
-    <main>
+    <main className=" absolute bottom-0">
       <p>all cool artists here</p>
-      <ul>
-        {artists.map((node) => (
-          <li key={node.id}>
-            <TransitionLink
-            exit={{
-              length: 1,
-            }}
-            entry={{length: 1}} 
+      <ul className="flex justify-between p-6">
+   
+        {artists.map((node, idx) => (
+          <React.Fragment key={idx}>
+          <li key={node.id} className={isActive === idx ? "text-red" : "p-4"}
+             onClick={() => {
+              // Condition for toggling the lists.
+              // If current list is selected
+              if (isActive === idx) {
+                // change active to blank
+                setIsActive();
+              } else {
+                // change active to current index
+                setIsActive(idx);
+              }
+            }}>
+            <Link
+        //    exit={{
+        //     length: 0,  
+        //     state: {customstate: 'this is a exiting message'}
+        //  }}
+        //   entry={{
+        //     length: 1,
+        //     state: {customstate: 'this is a entering message'}
+        //   }}
             to={`/artists${node.fields.slug}`}>
               {node.frontmatter.name}
-            </TransitionLink>
+            </Link>
           </li>
+          <div className={isActive === idx ? "info active" : "info"}>
+                {" "}
+                Index {idx + 1}
+              </div>
+          </React.Fragment>
         ))}
       </ul>
       </main>

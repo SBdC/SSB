@@ -2,10 +2,12 @@
   margin: auto;
   max-width: 500px;
   font-family: sans-serif;
+  height: 100vh;
 }
 
 .heading {
-  color: rebeccapurple;
+  color: blue;
+  padding:12px;
 }
 .nav-links {
   display: flex;

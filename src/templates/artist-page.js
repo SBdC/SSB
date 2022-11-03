@@ -1,21 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { graphql } from "gatsby";
 import Layout from '../components/layout';
 import Seo from '../components/seo';
 import ArtistsList from '../components/artistsList';
+import gsap from 'gsap';
 
 const ArtistPage = ({ data, transitionStatus  }) => {
 
-  const [currentArtist, setCurrentArtist] = useState();  
+ 
+  useEffect(() => {
+    gsap.from('.content-artist', {
+      autoAlpha: 1,
+      duration: 1,
+    });
+  }, []); //THIS IS RUN THE FIRST TIME THE SITE IS OPENED 
+
+  useEffect(() => {
+    if (transitionStatus === 'entering') {
+      gsap.from('.content-artist', {
+       y:800,
+       
+      });
+    }
+    if (transitionStatus === 'exiting') {
+      gsap.to('.content-artist', {
+        y:0, 
+        color:"red"
+       });
+    }
+  },[transitionStatus]); 
+  
 
 
   const article = data.markdownRemark
   return (
     <Layout pageTitle={article.frontmatter.name}>
-      <h2> this artist heyhooo</h2>
+      <section className='p-12 content-artist'>
+      <h2 > this artist heyhooo</h2>
       <p>{article.frontmatter.name}</p>
-      <ArtistsList currentArtist={currentArtist} setCurrentArtist={setCurrentArtist}/>
+      </section>
+     
+      <ArtistsList />
     </Layout>
   )
 }
